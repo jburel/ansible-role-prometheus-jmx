@@ -13,7 +13,7 @@
 
 - name: prometheus jmx | download jar
   become: true
-  get_url:
+  ansible.builtin.get_url:
     url: "https://repo1.maven.org/maven2/io/prometheus/jmx/\
       jmx_prometheus_javaagent/\
       {{ prometheus_jmx_version }}/\
@@ -34,7 +34,7 @@
 
 - name: prometheus jmx | configuration file
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: /etc/prometheus/jmx-default-config.yml
     force: true
     src: etc-prometheus-jmx-default-config.yml
