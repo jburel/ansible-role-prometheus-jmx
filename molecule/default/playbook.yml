@@ -9,30 +9,30 @@
   tasks:
 
     - name: Install test JDK
-      yum:
+      ansible.builtin.dnf:
         name: java-devel
         state: present
 
     - name: Copy test application
-      copy:
+      ansible.builtin.copy:
         src: BusyApp.java
         dest: /opt/BusyApp.java
         mode: 0644
 
     - name: Compile test application
-      command: javac BusyApp.java
+      ansible.builtin.command: javac BusyApp.java
       args:
         chdir: /opt
         creates: /opt/BusyApp.class
 
     - name: Check if test application running
-      command: pgrep java
+      ansible.builtin.command: pgrep java
       register: pgrep_java
       changed_when: false
       failed_when: 'pgrep_java.rc not in [0, 1]'
 
     - name: Run test application in background
-      command: "java \
+      ansible.builtin.command: "java \
         -javaagent:/opt/prometheus/jars/jmx_prometheus_javaagent.jar=12345:\
         /etc/prometheus/jmx-default-config.yml BusyApp"
       args:
